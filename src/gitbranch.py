@@ -1,23 +1,78 @@
 import os
+import time
 from git import Repo
+from collections import Counter
+from functools import wraps
 
+
+def timefn(fn):
+    @wraps(fn)
+    def measure_time(*args, **kwargs):
+        """ Decorator Function used to calculate the time taken to run any function"""
+        t1 = time.time()
+        result = fn(*args,**kwargs)
+        t2 = time.time()
+        print(f"@timefn: {fn.__name__} took {t2-t1} seconds")
+        return result
+    return measure_time
+
+
+@timefn
 def get_branches(path: os.PathLike):
+    """
+    Entry point function which lists the various branch in the file path passed. The get_branches returns
+    the branches in the existing code repository. This functions also calls the get_author_details functions within it.
+    returns: branches
+    """
     try:
         repo = Repo(path)
-        branches = {}
-        authors = []
+        branches = set()
 
-        assert not repo.bare # check if the repo is a bare repo
+        assert not repo.bare
+        assert repo.branches
         for branch in repo.branches:
-            list_commits = list(repo.iter_commits(branch))
-            branches[str(branch)] = len(list_commits)
-            print(len(list_commits))
+            branches.add(str(branch))
+            print(f"current branch: {branch}")
+            commit_branch_list = list(repo.iter_commits(branch))
+            print(f"Total commits in {branch} branch :-> {len(commit_branch_list)}")
+            get_author_details(repo, branch, commit_branch_list)
 
         return branches
-      
     except:
-        print("No branches exist")
+        print("Error in something-> go to debugging state")
+
+
+def get_author_details(repo, branch: str, commit_branch_list):
+    """ Function which gets the statistics of how many authors have commited in branch based
+    on their username details. This implementation uses python dictionaries
+    """
+    author_details = {}
+    for i in range(len(commit_branch_list)):
+        commit = commit_branch_list[i]
+        author_details[commit.author.name] = 0
+
+    for i in range(len(commit_branch_list)):
+        commit = commit_branch_list[i]
+        author_details[commit.author.name] += 1
+
+    print(author_details)
+
+    return None
+
+
+def get_author_details_list(repo, branch: str, commit_branch_list):
+    """ Function which gets the statistics of how many authors have commited in branch based
+    on their username details. This implementation uses Lists with a counter.
+    """
+    author_details = []
+    for i in range(len(commit_branch_list)):
+        commit = commit_branch_list[i]
+        author_details.append(commit.author.name)
+        
+    print(Counter(author_details))
+    return None
+    
 
 
 if __name__ == "__main__":
-    print(get_branches(os.getcwd()))
+    get_branches(os.getcwd())
