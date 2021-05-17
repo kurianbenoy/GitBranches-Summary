@@ -94,12 +94,11 @@ if __name__ == "__main__":
 
     elif option == 3:
         print("Enter a github repository")
-        path = input()
-        print("Enter a file path to empty directory")
-        fi = input()
-        print(f"Input values -{type(path)}, {type(fi)}")
-        git.Git(fi).clone(path)
-        print(Path(fi))
-        get_branches(Path(fi))
-
+        git_repo_path = input()
+        print("Enter a file path of empty directory to store project repo")
+        folder_path = input()
+        git.Git(folder_path).clone(git_repo_path)
+        folder = os.path.join(os.getcwd(), folder_path)
+        git_cloned_project = os.path.join(folder, os.listdir(folder)[0])
+        get_branches(git_cloned_project)
 
