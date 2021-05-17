@@ -8,12 +8,13 @@ from functools import wraps
 def timefn(fn):
     @wraps(fn)
     def measure_time(*args, **kwargs):
-        """ Decorator Function used to calculate the time taken to run any function"""
+        """Decorator Function used to calculate the time taken to run any function"""
         t1 = time.time()
-        result = fn(*args,**kwargs)
+        result = fn(*args, **kwargs)
         t2 = time.time()
         print(f"@timefn: {fn.__name__} took {t2-t1} seconds")
         return result
+
     return measure_time
 
 
@@ -43,7 +44,7 @@ def get_branches(path: os.PathLike):
 
 
 def get_author_details(repo, branch: str, commit_branch_list):
-    """ Function which gets the statistics of how many authors have commited in branch based
+    """Function which gets the statistics of how many authors have commited in branch based
     on their username details. This implementation uses python dictionaries
     """
     author_details = {}
@@ -61,30 +62,34 @@ def get_author_details(repo, branch: str, commit_branch_list):
 
 
 def get_author_details_list(repo, branch: str, commit_branch_list):
-    """ Function which gets the statistics of how many authors have commited in branch based
+    """Function which gets the statistics of how many authors have commited in branch based
     on their username details. This implementation uses Lists with a counter.
     """
     author_details = []
     for i in range(len(commit_branch_list)):
         commit = commit_branch_list[i]
         author_details.append(commit.author.name)
-        
+
     print(Counter(author_details))
     return None
-    
 
 
 if __name__ == "__main__":
-    print("Hello Hello! Welcome to Git branches project. Which github repo do you want to analyse your branches?")
-    print("Options\n1) Your  current working directory\n2) Provide the Path to your from this folder\n3) Enter a github repository url")
+    print(
+        "Hello Hello! Welcome to Git branches project. Which github repo do you want to analyse your branches?"
+    )
+    print(
+        "Options\n1) Your  current working directory\n2) Provide the Path to your from this folder\n3) Enter a github repository url"
+    )
     option = int(input())
-    if(option==1):
+    if option == 1:
         get_branches(os.getcwd())
-    elif(option==2):
-        print("Provide your path to the repo from this folder in Pathlib expected format")
+    elif option == 2:
+        print(
+            "Provide your path to the repo from this folder in Pathlib expected format"
+        )
         path = input()
 
-    elif(option==3):
+    elif option == 3:
         print("Enter a git repository")
         path = input()
-    
