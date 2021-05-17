@@ -1,8 +1,10 @@
 import os
 import time
+import git
 from git import Repo
 from collections import Counter
 from functools import wraps
+from pathlib import Path
 
 
 def timefn(fn):
@@ -91,5 +93,13 @@ if __name__ == "__main__":
         path = input()
 
     elif option == 3:
-        print("Enter a git repository")
+        print("Enter a github repository")
         path = input()
+        print("Enter a file path to empty directory")
+        fi = input()
+        print(f"Input values -{type(path)}, {type(fi)}")
+        git.Git(fi).clone(path)
+        print(Path(fi))
+        get_branches(Path(fi))
+
+
