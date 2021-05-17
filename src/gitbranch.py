@@ -32,7 +32,7 @@ def get_branches(path: os.PathLike):
         assert repo.branches
         for branch in repo.branches:
             branches.add(str(branch))
-            print(f"current branch: {branch}")
+            print(f"Branch: {branch}")
             commit_branch_list = list(repo.iter_commits(branch))
             print(f"Total commits in {branch} branch :-> {len(commit_branch_list)}")
             get_author_details(repo, branch, commit_branch_list)
@@ -75,4 +75,16 @@ def get_author_details_list(repo, branch: str, commit_branch_list):
 
 
 if __name__ == "__main__":
-    get_branches(os.getcwd())
+    print("Hello Hello! Welcome to Git branches project. Which github repo do you want to analyse your branches?")
+    print("Options\n1) Your  current working directory\n2) Provide the Path to your from this folder\n3) Enter a github repository url")
+    option = int(input())
+    if(option==1):
+        get_branches(os.getcwd())
+    elif(option==2):
+        print("Provide your path to the repo from this folder in Pathlib expected format")
+        path = input()
+
+    elif(option==3):
+        print("Enter a git repository")
+        path = input()
+    
