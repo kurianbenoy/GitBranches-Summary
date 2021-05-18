@@ -86,11 +86,13 @@ if __name__ == "__main__":
     option = int(input())
     if option == 1:
         get_branches(os.getcwd())
+
     elif option == 2:
         print(
             "Provide your path to the repo from this folder in Pathlib expected format"
         )
         path = input()
+        get_branches(path)
 
     elif option == 3:
         print("Enter a github repository")
@@ -101,4 +103,3 @@ if __name__ == "__main__":
         folder = os.path.join(os.getcwd(), folder_path)
         git_cloned_project = os.path.join(folder, os.listdir(folder)[0])
         get_branches(git_cloned_project)
-
